@@ -1,0 +1,22 @@
+name: test
+
+on: [push]
+
+jobs:
+  test:
+    strategy:
+      matrix:
+        platform: [ubuntu-latest]
+    runs-on: ${{ matrix.platform }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # to retrieve git tags
+      - name: Install FVM
+        # https://fvm.app/docs/getting_started/installation
+        run: |
+          brew tap leoafarias/fvm
+          brew install fvm
+      - name: Run CI test
+        run: make ci-test
